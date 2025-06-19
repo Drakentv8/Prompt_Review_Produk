@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Review Produk Prompter AI</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Google Fonts Lora for elegant headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide React Icons for a modern look (loaded via CDN for simplicity) -->
+    <script type="module">
+        // Basic setup for Lucide icons if needed in standalone HTML
+        // For a full React setup, you'd install lucide-react
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif; /* Primary font */
+            background-color: #0a0a0f; /* Even darker background for luxury feel */
+            color: #e2e8f0; /* Light text color */
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Lora', serif; /* A more elegant font for headings */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a202c; /* Darker track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568; /* Grayish thumb */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b; /* Lighter on hover */
+        }
+
+        /* Custom Animations */
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+            animation: fade-in-up 0.4s ease-out forwards;
+        }
+
+        @keyframes pulse-gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-pulse-gradient {
+            background-size: 200% 200%;
+            animation: pulse-gradient 4s ease infinite;
+        }
+
+        @keyframes subtle-glow {
+            0% { box-shadow: 0 0 8px rgba(139, 92, 246, 0.4); } /* Purple-600 */
+            50% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); } /* Indigo-600 */
+            100% { box-shadow: 0 0 8px rgba(139, 92, 246, 0.4); }
+        }
+        .animate-subtle-glow {
+            animation: subtle-glow 3.5s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-gradient-shift {
+            background-size: 200% 200%;
+            animation: gradient-shift 25s ease infinite; /* Even slower, more subtle */
+        }
+
+        /* Specific styles for elegant input/select */
+        .input-elegant {
+            background-color: #1a202c !important; /* Darker input background */
+            color: #e2e8f0 !important; /* Lighter text in input */
+            border-color: #4a5568 !important; /* Subtle border */
+        }
+        .input-elegant:focus {
+            border-color: #6366f1 !important; /* Indigo on focus */
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5) !important; /* Focus ring */
+        }
+        @media (max-width: 640px) {
+            h1, .font-lora.text-5xl, .font-lora.text-6xl {
+                font-size: 2rem !important;
+                line-height: 2.4rem !important;
+            }
+            .mb-10 { margin-bottom: 1.5rem !important; }
+            .mb-8 { margin-bottom: 1rem !important; }
+            .p-10, .p-12, .p-6 { padding: 1rem !important; }
+            .rounded-2xl, .rounded-lg { border-radius: 0.75rem !important; }
+            .px-8, .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+            .py-3, .py-4, .py-5, .py-6 { padding-top: 0.75rem !important; padding-bottom: 0.75rem !important; }
+            .text-xl { font-size: 1.1rem !important; }
+            .text-2xl { font-size: 1.3rem !important; }
+            .text-3xl { font-size: 1.5rem !important; }
+            .text-5xl, .text-6xl { font-size: 2rem !important; }
+            .text-lg { font-size: 1rem !important; }
+            .input-elegant { font-size: 1rem !important; }
+            .flex.justify-center.space-x-6 > * { margin-left: 0.25rem !important; margin-right: 0.25rem !important; }
+            .flex.justify-center.space-x-6 { gap: 0.5rem !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // ErrorBoundary untuk menangkap error fatal di React
+        class ErrorBoundary extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { hasError: false, error: null };
+            }
+            static getDerivedStateFromError(error) {
+                return { hasError: true, error };
+            }
+            componentDidCatch(error, errorInfo) {
+                console.error('React ErrorBoundary:', error, errorInfo);
+            }
+            render() {
+                if (this.state.hasError) {
+                    return (
+                        <div className="min-h-screen flex flex-col items-center justify-center bg-black text-red-300 p-10">
+                            <h1 className="text-3xl font-bold mb-4">Terjadi Error pada Aplikasi</h1>
+                            <pre className="bg-gray-900 p-6 rounded-lg text-red-200 overflow-x-auto max-w-xl">{String(this.state.error)}</pre>
+                            <p className="mt-6 text-lg">Silakan refresh halaman atau laporkan error ini ke pengembang.</p>
+                        </div>
+                    );
+                }
+                return this.props.children;
+            }
+        }
+
+        // Base URL for your backend API
+        const API_BASE_URL = window.location.origin === "null" || window.location.protocol === "file:" 
+                             ? "http://localhost:5000" 
+                             : window.location.origin;
+        console.log("API Base URL yang digunakan:", API_BASE_URL); 
+
+        // Custom Modal Component
+        const Modal = ({ isOpen, onClose, title, children, language }) => {
+            if (!isOpen) return null;
+
+            return (
+                <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-6 animate-fade-in">
+                    <div className="bg-gray-900 rounded-2xl shadow-3xl w-full max-w-xl p-10 transform scale-95 animate-fade-in-up border border-purple-700">
+                        <div className="flex justify-between items-center pb-5 border-b border-gray-700">
+                            <h3 className="text-3xl font-bold text-white font-lora">{title}</h3>
+                            <button
+                                onClick={onClose}
+                                className="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 rounded-full p-2 transition duration-300"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                            </button>
+                        </div>
+                        <div className="py-8 text-gray-200">
+                            {children}
+                        </div>
+                        <div className="flex justify-end pt-6 border-t border-gray-700">
+                            <button
+                                onClick={onClose}
+                                className="px-8 py-3 bg-gray-700 text-gray-200 rounded-xl hover:bg-gray-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 font-semibold text-lg"
+                            >
+                                {language === 'id' ? 'Tutup' : 'Close'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [productName, setProductName] = useState('');
+            const [language, setLanguage] = useState('id'); // 'id' for Indonesian, 'en' for English
+            const [generatedPromptId, setGeneratedPromptId] = useState('');
+            const [generatedPromptEn, setGeneratedPromptEn] = useState('');
+            const [visualAudioSuggestionsId, setVisualAudioSuggestionsId] = useState(''); // New state for suggestions
+            const [visualAudioSuggestionsEn, setVisualAudioSuggestionsEn] = useState(''); // New state for suggestions
+            const [isLoading, setIsLoading] = useState(false);
+            const [errorMessage, setErrorMessage] = useState('');
+            const [videoLink, setVideoLink] = useState('');
+            const [externalPrompt, setExternalPrompt] = useState('');
+            const [externalVisualAudioSuggestions, setExternalVisualAudioSuggestions] = useState(''); // New state for external suggestions
+            const [isModalOpen, setIsModalOpen] = useState(false);
+            const [modalTitle, setModalTitle] = useState('');
+            const [modalContent, setModalContent] = useState('');
+            const [characterOption, setCharacterOption] = useState('new'); // 'new' or 'consistent'
+            const [tone, setTone] = useState('Informatif'); // New state for tone
+            const [style, setStyle] = useState('Langsung'); // New state for style
+            const [productCategory, setProductCategory] = useState('Umum'); // New state for product category
+            const [videoLength, setVideoLength] = useState('8 detik'); // Default to 8 seconds
+            // New states for added features
+            const [targetAudience, setTargetAudience] = useState('');
+            const [mainMessage, setMainMessage] = useState('');
+            const [brandVoice, setBrandVoice] = useState('Profesional');
+            const [isGeneratingAudience, setIsGeneratingAudience] = useState(false);
+            const [isGeneratingMessage, setIsGeneratingMessage] = useState(false);
+            const [vloggingMode, setVloggingMode] = useState(false); // New state for vlogging mode
+            const [voiceOverLanguage, setVoiceOverLanguage] = useState('id'); // 'id' for Indonesia, 'en' for English
+
+            const [uploadedCharacterImage, setUploadedCharacterImage] = useState(null); // State for uploaded image file
+            const [generatedCharacterDescription, setGeneratedCharacterDescription] = useState(''); // State for AI-generated character description
+            const [isGeneratingCharacter, setIsGeneratingCharacter] = useState(false); // Loading state for character generation
+
+
+            // Function to show a custom message box instead of alert()
+            const showMessageBox = (title, message) => {
+                setModalTitle(title);
+                setModalContent(message);
+                setIsModalOpen(true);
+            };
+
+            const handleFileChange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    setUploadedCharacterImage(file);
+                    setGeneratedCharacterDescription(''); // Reset description when new image is uploaded
+                }
+            };
+
+            const handleGenerateCharacterFromPhoto = async () => {
+                if (!uploadedCharacterImage) {
+                    showMessageBox('Peringatan', 'Harap unggah gambar karakter terlebih dahulu.');
+                    return;
+                }
+
+                setIsGeneratingCharacter(true);
+                setGeneratedCharacterDescription(''); // Clear previous description
+
+                const formData = new FormData();
+                formData.append('image', uploadedCharacterImage);
+                formData.append('language', language); // Send current language
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/generate_character_from_photo`, {
+                        method: 'POST',
+                        body: formData, // FormData automatically sets Content-Type to multipart/form-data
+                    });
+
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.error || 'Gagal menghasilkan karakter dari foto.');
+                        }
+                        setGeneratedCharacterDescription(language === 'id' ? data.character_description_id : data.character_description_en);
+                        showMessageBox('Karakter Dihasilkan', language === 'id' ? 
+                            `Deskripsi karakter berhasil dihasilkan: "${data.character_description_id}"` : 
+                            `Character description successfully generated: "${data.character_description_en}"`);
+                    } else {
+                        const textData = await response.text();
+                        console.error("Non-JSON response from server:", textData);
+                        throw new Error(`Respons server bukan JSON. Status: ${response.status}. Isi: ${textData.substring(0, 200)}...`);
+                    }
+                } catch (error) {
+                    console.error('Error generating character from photo:', error);
+                    showMessageBox('Gagal', `Gagal menghasilkan karakter dari foto: ${error.message}`);
+                } finally {
+                    setIsGeneratingCharacter(false);
+                }
+            };
+
+            const handleGeneratePrompt = async () => {
+                if (!productName.trim()) {
+                    showMessageBox('Peringatan', 'Nama produk tidak boleh kosong.');
+                    return;
+                }
+
+                setIsLoading(true);
+                setErrorMessage('');
+                setGeneratedPromptId('');
+                setGeneratedPromptEn('');
+                setVisualAudioSuggestionsId('');
+                setVisualAudioSuggestionsEn('');
+
+                try {
+                    const fetchUrl = `${API_BASE_URL}/generate_prompt`; // Define fetch URL
+                    console.log(`Sending request to: ${fetchUrl}`); // Log the exact URL being fetched
+                    const response = await fetch(fetchUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ 
+                            product_name: productName, 
+                            language: language, // Though backend generates both, we keep this for consistency
+                            character_option: characterOption,
+                            tone: tone,
+                            style: style,
+                            product_category: productCategory,
+                            video_length: videoLength,
+                            target_audience: targetAudience, 
+                            main_message: mainMessage,       
+                            brand_voice: brandVoice,           
+                            vlogging_mode: vloggingMode,      
+                            generated_character_description: generatedCharacterDescription, // Pass generated character description
+                            voice_over_language: voiceOverLanguage // Pass voice over language
+                        }),
+                    });
+
+                    // Check if the response is JSON before parsing
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.error || 'Terjadi kesalahan saat menghasilkan prompt.');
+                        }
+                        setGeneratedPromptId(data.prompt_id);
+                        setGeneratedPromptEn(data.prompt_en);
+                        setVisualAudioSuggestionsId(data.visual_audio_suggestions_id);
+                        setVisualAudioSuggestionsEn(data.visual_audio_suggestions_en);
+                    } else {
+                        // If not JSON, it's likely an HTML error page or similar
+                        const textData = await response.text();
+                        console.error("Non-JSON response from server:", textData);
+                        throw new Error(`Respons server bukan JSON. Status: ${response.status}. Isi: ${textData.substring(0, 200)}...`);
+                    }
+
+                } catch (error) {
+                    console.error('Error generating prompt:', error);
+                    setErrorMessage(`Gagal menghasilkan prompt: ${error.message}`);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const handleGenerateTargetAudience = async () => {
+                if (!productName.trim()) {
+                    showMessageBox('Peringatan', 'Harap masukkan nama produk terlebih dahulu untuk menghasilkan target audiens.');
+                    return;
+                }
+                setIsGeneratingAudience(true);
+                try {
+                    const response = await fetch(`${API_BASE_URL}/generate_target_audience`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ product_name: productName, product_category: productCategory, language: language })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        setTargetAudience(language === 'id' ? data.audience_id : data.audience_en);
+                    } else {
+                        throw new Error(data.error || 'Gagal menghasilkan target audiens.');
+                    }
+                } catch (error) {
+                    console.error('Error generating target audience:', error);
+                    showMessageBox('Gagal', `Gagal menghasilkan target audiens: ${error.message}`);
+                } finally {
+                    setIsGeneratingAudience(false);
+                }
+            };
+
+            const handleGenerateMainMessage = async () => {
+                if (!productName.trim()) {
+                    showMessageBox('Peringatan', 'Harap masukkan nama produk terlebih dahulu untuk menghasilkan pesan utama.');
+                    return;
+                }
+                setIsGeneratingMessage(true);
+                try {
+                    const response = await fetch(`${API_BASE_URL}/generate_main_message`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ product_name: productName, product_category: productCategory, language: language })
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                        setMainMessage(language === 'id' ? data.message_id : data.message_en);
+                    } else {
+                        throw new Error(data.error || 'Gagal menghasilkan pesan utama.');
+                    }
+                } catch (error) {
+                    console.error('Error generating main message:', error);
+                    showMessageBox('Gagal', `Gagal menghasilkan pesan utama: ${error.message}`);
+                } finally {
+                    setIsGeneratingMessage(false);
+                }
+            };
+
+
+            const handleGetExternalPrompt = async () => {
+                if (!videoLink.trim()) {
+                    showMessageBox('Peringatan', 'Link video tidak boleh kosong.');
+                    return;
+                }
+
+                setIsLoading(true);
+                setErrorMessage('');
+                setExternalPrompt('');
+                setExternalVisualAudioSuggestions('');
+
+                try {
+                    const fetchUrl = `${API_BASE_URL}/get_external_prompt`; // Define fetch URL
+                    console.log(`Sending request to: ${fetchUrl}`); // Log the exact URL being fetched
+                    const response = await fetch(fetchUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ video_url: videoLink }),
+                    });
+
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        const data = await response.json();
+                        if (!response.ok) {
+                            throw new Error(data.error || 'Terjadi kesalahan saat mengambil prompt eksternal.');
+                        }
+                        setExternalPrompt(data.prompt);
+                        setExternalVisualAudioSuggestions(data.visual_audio_suggestions_id); // Assuming ID for initial display
+                        
+                        // Show full prompt and suggestions in modal
+                        showMessageBox('Prompt dari Video Eksternal', (
+                            <div className="max-h-96 overflow-y-auto p-2 bg-gray-50 rounded-md">
+                                <h4 className="font-semibold text-gray-800 mb-2">Prompt Utama:</h4>
+                                <p className="whitespace-pre-wrap text-sm text-gray-700 mb-4">{data.prompt}</p>
+                                <h4 className="font-semibold text-gray-800 mb-2">Saran Visual & Audio:</h4>
+                                <p className="whitespace-pre-wrap text-sm text-gray-700">{language === 'id' ? data.visual_audio_suggestions_id : data.visual_audio_suggestions_en}</p>
+                            </div>
+                        ));
+
+                    } else {
+                        const textData = await response.text();
+                        console.error("Non-JSON response from server:", textData);
+                        throw new Error(`Respons server bukan JSON. Status: ${response.status}. Isi: ${textData.substring(0, 200)}...`);
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching external prompt:', error);
+                    setErrorMessage(`Gagal mengambil prompt eksternal: ${error.message}`);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+
+            const copyToClipboard = (text) => {
+                if (!text) {
+                    showMessageBox('Informasi', 'Tidak ada prompt untuk disalin.');
+                    return;
+                }
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showMessageBox('Sukses', 'Prompt berhasil disalin ke clipboard!');
+                } catch (err) {
+                    console.error('Failed to copy text:', err);
+                    showMessageBox('Gagal', 'Gagal menyalin prompt. Silakan coba manual.');
+                }
+                document.body.removeChild(textarea);
+            };
+
+            return (
+                <div className="min-h-screen flex flex-col items-center justify-center py-10 px-4 bg-gradient-to-br from-gray-950 via-gray-900 to-indigo-950 animate-gradient-shift">
+                    <div className="bg-gray-800 p-10 rounded-2xl shadow-3xl w-full max-w-4xl border border-indigo-700 transform hover:scale-[1.005] transition-transform duration-300 animate-subtle-glow">
+                        <h1 className="text-5xl font-extrabold text-center mb-10 tracking-tight leading-tight text-white font-lora">
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                                Video Review Produk Prompter AI
+                            </span>
+                        </h1>
+
+                        {/* Language Selection */}
+                        <div className="mb-8 flex justify-center space-x-6">
+                            <button
+                                onClick={() => setLanguage('id')}
+                                className={`px-8 py-3 rounded-xl font-bold text-lg transition duration-300 transform hover:scale-105 shadow-lg 
+                                    ${language === 'id' ? 'bg-indigo-600 text-white border border-indigo-500' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'}
+                                `}
+                            >
+                                Bahasa Indonesia
+                            </button>
+                            <button
+                                onClick={() => setLanguage('en')}
+                                className={`px-8 py-3 rounded-xl font-bold text-lg transition duration-300 transform hover:scale-105 shadow-lg 
+                                    ${language === 'en' ? 'bg-indigo-600 text-white border border-indigo-500' : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'}
+                                `}
+                            >
+                                English
+                            </button>
+                        </div>
+
+                        {/* Product Name Input */}
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                            <label htmlFor="productName" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Nama Produk:' : 'Product Name:'}
+                            </label>
+                            <input
+                                type="text"
+                                id="productName"
+                                value={productName}
+                                onChange={(e) => setProductName(e.target.value)}
+                                placeholder={language === 'id' ? 'Masukkan nama produk (contoh: Smartphone XYZ Pro)' : 'Enter product name (e.g., Smartphone XYZ Pro)'}
+                                className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                            />
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 'Diisi oleh pengguna: Nama produk utama yang akan direview.' : 'User-filled: The main product name to be reviewed.'}
+                            </p>
+                        </div>
+
+                        {/* New Feature Inputs (Dropdowns) */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                            {/* Product Category */}
+                            <div className="p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                                <label htmlFor="productCategory" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                    {language === 'id' ? 'Kategori Produk:' : 'Product Category:'}
+                                </label>
+                                <select
+                                    id="productCategory"
+                                    value={productCategory}
+                                    onChange={(e) => setProductCategory(e.target.value)}
+                                    className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                                >
+                                    <option value="Umum">{language === 'id' ? 'Umum' : 'General'}</option>
+                                    <option value="Elektronik">{language === 'id' ? 'Elektronik' : 'Electronics'}</option>
+                                    <option value="Fashion">{language === 'id' ? 'Fashion' : 'Fashion'}</option>
+                                    <option value="Rumah Tangga">{language === 'id' ? 'Rumah Tangga' : 'Home Goods'}</option>
+                                    <option value="Makanan & Minuman">{language === 'id' ? 'Makanan & Minuman' : 'Food & Beverages'}</option>
+                                    <option value="Kecantikan">{language === 'id' ? 'Kecantikan' : 'Beauty'}</option>
+                                    <option value="Otomotif">{language === 'id' ? 'Otomotif' : 'Automotive'}</option>
+                                    <option value="Software">{language === 'id' ? 'Software' : 'Software'}</option>
+                                </select>
+                                <p className="text-sm text-gray-400 mt-2">
+                                    {language === 'id' ? 'Diisi oleh pengguna: Kategori relevan untuk produk.' : 'User-filled: Relevant category for the product.'}
+                                </p>
+                            </div>
+
+                            {/* Video Length */}
+                            <div className="p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                                <label htmlFor="videoLength" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                    {language === 'id' ? 'Durasi Video Ideal:' : 'Ideal Video Length:'}
+                                </label>
+                                <select
+                                    id="videoLength"
+                                    value={videoLength}
+                                    onChange={(e) => setVideoLength(e.target.value)}
+                                    className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                                >
+                                    <option value="6-8 detik">{language === 'id' ? '6-8 Detik' : '6-8 Seconds'}</option>
+                                    <option value="8-10 detik">{language === 'id' ? '8-10 Detik' : '8-10 Seconds'}</option>
+                                    <option value="10-15 detik">{language === 'id' ? '10-15 Detik' : '10-15 Seconds'}</option>
+                                    <option value="15-30 detik">{language === 'id' ? '15-30 Detik' : '15-30 Seconds'}</option>
+                                </select>
+                                <p className="text-sm text-gray-400 mt-2">
+                                    {language === 'id' ? 'Diisi oleh pengguna: Perkiraan durasi video yang diinginkan.' : 'User-filled: Desired approximate video length.'}
+                                </p>
+                            </div>
+
+                            {/* Tone */}
+                            <div className="p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                                <label htmlFor="tone" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                    {language === 'id' ? 'Nada Video:' : 'Video Tone:'}
+                                </label>
+                                <select
+                                    id="tone"
+                                    value={tone}
+                                    onChange={(e) => setTone(e.target.value)}
+                                    className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                                >
+                                    <option value="Informatif">{language === 'id' ? 'Informatif' : 'Informative'}</option>
+                                    <option value="Antusias">{language === 'id' ? 'Antusias' : 'Enthusiastic'}</option>
+                                    <option value="Humoris">{language === 'id' ? 'Humoris' : 'Humorous'}</option>
+                                    <option value="Profesional">{language === 'id' ? 'Profesional' : 'Professional'}</option>
+                                    <option value="Edukasi">{language === 'id' ? 'Edukasi' : 'Educational'}</option>
+                                    <option value="Persuasif">{language === 'id' ? 'Persuasif' : 'Persuasive'}</option>
+                                </select>
+                                <p className="text-sm text-gray-400 mt-2">
+                                    {language === 'id' ? 'Diisi oleh pengguna: Suasana atau emosi utama video.' : 'User-filled: The primary mood or emotion of the video.'}
+                                </p>
+                            </div>
+
+                            {/* Style */}
+                            <div className="p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                                <label htmlFor="style" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                    {language === 'id' ? 'Gaya Presentasi:' : 'Presentation Style:'}
+                                </label>
+                                <select
+                                    id="style"
+                                    value={style}
+                                    onChange={(e) => setStyle(e.target.value)}
+                                    className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                                >
+                                    <option value="Langsung">{language === 'id' ? 'Langsung & Jelas' : 'Direct & Clear'}</option>
+                                    <option value="Storytelling">{language === 'id' ? 'Bercerita (Storytelling)' : 'Storytelling'}</option>
+                                    <option value="Perbandingan">{language === 'id' ? 'Perbandingan' : 'Comparison'}</option>
+                                    <option value="Demo Produk">{language === 'id' ? 'Demo Produk' : 'Product Demo'}</option>
+                                    <option value="Unboxing">{language === 'id' ? 'Unboxing' : 'Unboxing'}</option>
+                                </select>
+                                <p className="text-sm text-gray-400 mt-2">
+                                    {language === 'id' ? 'Diisi oleh pengguna: Cara utama video disajikan.' : 'User-filled: The primary manner the video is presented.'}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* New Inputs with AI Generate Buttons */}
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                            <label htmlFor="targetAudience" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Target Audiens (Deskripsikan):' : 'Target Audience (Describe):'}
+                            </label>
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                                <textarea
+                                    id="targetAudience"
+                                    value={targetAudience}
+                                    onChange={(e) => setTargetAudience(e.target.value)}
+                                    placeholder={language === 'id' ? 'Contoh: Remaja usia 18-25 yang peduli lingkungan dan gaya hidup sehat.' : 'Example: Teenagers aged 18-25 who care about the environment and healthy lifestyles.'}
+                                    rows="3"
+                                    className="flex-grow w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                                ></textarea>
+                                <button
+                                    onClick={handleGenerateTargetAudience}
+                                    disabled={isGeneratingAudience || !productName.trim()}
+                                    className={`px-6 py-3 rounded-lg font-bold text-white transition duration-300 ease-in-out transform hover:scale-105 shadow-md flex-shrink-0 ${
+                                        isGeneratingAudience || !productName.trim() ? 'bg-gray-600 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'
+                                    }`}
+                                >
+                                    {isGeneratingAudience ? (
+                                        <svg className="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    ) : (
+                                        language === 'id' ? 'AI Hasilkan' : 'AI Generate'
+                                    )}
+                                </button>
+                            </div>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 'Diisi oleh AI (Opsional: dapat diubah pengguna): Deskripsi audiens utama yang dituju.' : 'AI-filled (Optional: user can modify): Description of the primary target audience.'}
+                            </p>
+                        </div>
+
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                            <label htmlFor="mainMessage" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Pesan Utama / USP (Singkat):' : 'Main Message / USP (Brief):'}
+                            </label>
+                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                                <textarea
+                                    id="mainMessage"
+                                    value={mainMessage}
+                                    onChange={(e) => setMainMessage(e.target.value)}
+                                    placeholder={language === 'id' ? 'Contoh: Produk ini adalah solusi paling hemat energi untuk rumah pintar Anda.' : 'Example: This product is the most energy-efficient solution for your smart home.'}
+                                    rows="2"
+                                    className="flex-grow w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                                ></textarea>
+                                <button
+                                    onClick={handleGenerateMainMessage}
+                                    disabled={isGeneratingMessage || !productName.trim()}
+                                    className={`px-6 py-3 rounded-lg font-bold text-white transition duration-300 ease-in-out transform hover:scale-105 shadow-md flex-shrink-0 ${
+                                        isGeneratingMessage || !productName.trim() ? 'bg-gray-600 cursor-not-allowed' : 'bg-emerald-600 hover:bg-emerald-700'
+                                    }`}
+                                >
+                                    {isGeneratingMessage ? (
+                                        <svg className="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                    ) : (
+                                        language === 'id' ? 'AI Hasilkan' : 'AI Generate'
+                                    )}
+                                </button>
+                            </div>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 'Diisi oleh AI (Opsional: dapat diubah pengguna): Keunggulan produk yang paling ingin ditekankan.' : 'AI-filled (Optional: user can modify): The most important selling point to emphasize.'}
+                            </p>
+                        </div>
+
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                            <label htmlFor="brandVoice" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Gaya Suara Merek (Brand Voice):' : 'Brand Voice:'}
+                            </label>
+                            <select
+                                id="brandVoice"
+                                value={brandVoice}
+                                onChange={(e) => setBrandVoice(e.target.value)}
+                                className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                            >
+                                <option value="Profesional">{language === 'id' ? 'Profesional' : 'Professional'}</option>
+                                <option value="Ramah">{language === 'id' ? 'Ramah & Akrab' : 'Friendly & Approachable'}</option>
+                                <option value="Inovatif">{language === 'id' ? 'Inovatif & Futuristik' : 'Innovative & Futuristic'}</option>
+                                <option value="Santai">{language === 'id' ? 'Santai & Casual' : 'Relaxed & Casual'}</option>
+                                <option value="Otoritatif">{language === 'id' ? 'Otoritatif & Terpercaya' : 'Authoritative & Trustworthy'}</option>
+                                <option value="Playful">{language === 'id' ? 'Ceria & Playful' : 'Playful & Cheerful'}</option>
+                            </select>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 'Diisi oleh pengguna: Gaya bahasa dan kepribadian yang mewakili merek.' : 'User-filled: The linguistic style and personality representing the brand.'}
+                            </p>
+                        </div>
+
+                        {/* Vlogging Mode Checkbox */}
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg border border-gray-600 shadow-inner">
+                            <label className="inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    className="form-checkbox h-6 w-6 text-purple-500 rounded-md focus:ring-purple-500"
+                                    checked={vloggingMode}
+                                    onChange={(e) => setVloggingMode(e.target.checked)}
+                                />
+                                <span className="ml-3 text-gray-200 text-xl font-semibold font-lora">
+                                    {language === 'id' ? 'Mode Vlogging (Karakter Berbicara)' : 'Vlogging Mode (Character Speaks)'}
+                                </span>
+                            </label>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ?
+                                    'Pilih ini jika Anda ingin prompt menyertakan instruksi untuk karakter yang berbicara langsung ke kamera atau memiliki dialog dalam gaya vlogging.' :
+                                    'Select this if you want the prompt to include instructions for a character speaking directly to the camera or having dialogue in a vlogging style.'}
+                            </p>
+                        </div>
+
+                        {/* Character Image Upload */}
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg border border-gray-600 shadow-inner">
+                            <label htmlFor="characterImage" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Unggah Foto Karakter (Opsional):' : 'Upload Character Photo (Optional):'}
+                            </label>
+                            <input
+                                type="file"
+                                id="characterImage"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className="w-full p-3 border border-gray-600 rounded-lg shadow-sm text-sm text-gray-300
+                                           file:mr-4 file:py-2 file:px-4
+                                           file:rounded-full file:border-0
+                                           file:text-sm file:font-semibold
+                                           file:bg-blue-600 file:text-white
+                                           hover:file:bg-blue-700 transition duration-200 cursor-pointer"
+                            />
+                            {uploadedCharacterImage && (
+                                <p className="text-sm text-gray-400 mt-2">
+                                    {language === 'id' ? `File terpilih: ${uploadedCharacterImage.name}` : `Selected file: ${uploadedCharacterImage.name}`}
+                                </p>
+                            )}
+                            <button
+                                onClick={handleGenerateCharacterFromPhoto}
+                                disabled={!uploadedCharacterImage || isGeneratingCharacter}
+                                className={`mt-4 px-6 py-3 rounded-lg font-bold text-white transition duration-300 ease-in-out transform hover:scale-105 shadow-md
+                                    ${!uploadedCharacterImage || isGeneratingCharacter ? 'bg-gray-600 cursor-not-allowed' : 'bg-yellow-600 hover:bg-yellow-700'}
+                                `}
+                            >
+                                {isGeneratingCharacter ? (
+                                    <svg className="animate-spin h-5 w-5 text-white inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                ) : (
+                                    language === 'id' ? 'Hasilkan Karakter dari Foto' : 'Generate Character from Photo'
+                                )}
+                            </button>
+                            {generatedCharacterDescription && (
+                                <div className="mt-4 p-4 bg-yellow-700 bg-opacity-30 border border-yellow-500 rounded-lg text-sm text-yellow-100">
+                                    <h4 className="font-semibold mb-1 font-lora">{language === 'id' ? 'Deskripsi Karakter AI:' : 'AI Character Description:'}</h4>
+                                    <p className="whitespace-pre-wrap">{generatedCharacterDescription}</p>
+                                </div>
+                            )}
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 'Diisi oleh pengguna: Unggah foto karakter. AI akan menghasilkan deskripsi yang digunakan dalam prompt.' : 'User-filled: Upload a character photo. AI will generate a description used in the prompt.'}
+                            </p>
+                        </div>
+
+                        {/* Character Selection (Original, now augmented by photo upload) */}
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg border border-gray-600 shadow-inner">
+                            <label className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Pilihan Karakter Video (jika tidak ada foto):' : 'Video Character Option (if no photo):'}
+                            </label>
+                            <div className="flex space-x-6">
+                                <label className="inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        className="form-radio h-6 w-6 text-indigo-500 rounded-md focus:ring-indigo-500"
+                                        name="characterOption"
+                                        value="consistent"
+                                        checked={characterOption === 'consistent'}
+                                        onChange={(e) => setCharacterOption(e.target.value)}
+                                        disabled={!!generatedCharacterDescription} // Disable if photo character is generated
+                                    />
+                                    <span className={`ml-2 text-base ${generatedCharacterDescription ? 'text-gray-500' : 'text-gray-300'}`}>
+                                        {language === 'id' ? 'Karakter Konsisten (Sama)' : 'Consistent Character (Same)'}
+                                    </span>
+                                </label>
+                                <label className="inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        className="form-radio h-6 w-6 text-indigo-500 rounded-md focus:ring-indigo-500"
+                                        name="characterOption"
+                                        value="new"
+                                        checked={characterOption === 'new'}
+                                        onChange={(e) => setCharacterOption(e.target.value)}
+                                        disabled={!!generatedCharacterDescription} // Disable if photo character is generated
+                                    />
+                                    <span className={`ml-2 text-base ${generatedCharacterDescription ? 'text-gray-500' : 'text-gray-300'}`}>
+                                        {language === 'id' ? 'Karakter Baru' : 'New Character'}
+                                    </span>
+                                </label>
+                            </div>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 
+                                    'Pilihan ini akan diabaikan jika Anda mengunggah foto karakter. Digunakan untuk instruksi karakter umum.' :
+                                    'This option will be ignored if you upload a character photo. Used for general character instructions.'}
+                            </p>
+                        </div>
+
+                        {/* Voice Over Language Selection */}
+                        <div className="mb-8 p-6 bg-gray-700 rounded-lg shadow-inner border border-gray-600">
+                            <label htmlFor="voiceOverLanguage" className="block text-gray-200 text-xl font-semibold mb-3 font-lora">
+                                {language === 'id' ? 'Bahasa Voice Over:' : 'Voice Over Language:'}
+                            </label>
+                            <select
+                                id="voiceOverLanguage"
+                                value={voiceOverLanguage}
+                                onChange={e => setVoiceOverLanguage(e.target.value)}
+                                className="w-full px-6 py-3 input-elegant rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition duration-200"
+                            >
+                                <option value="id">Bahasa Indonesia</option>
+                                <option value="en">English</option>
+                            </select>
+                            <p className="text-sm text-gray-400 mt-2">
+                                {language === 'id' ? 'Pilih bahasa untuk dialog/voice over karakter jika mode vlogging aktif.' : 'Select the language for character voice over/dialogue if vlogging mode is active.'}
+                            </p>
+                        </div>
+
+                        {/* Generate Prompt Button */}
+                        <div className="mb-10 text-center">
+                            <button
+                                onClick={handleGeneratePrompt}
+                                disabled={isLoading}
+                                className={`px-12 py-5 rounded-full font-extrabold text-xl text-white transition duration-300 ease-in-out transform hover:scale-105 shadow-xl flex items-center justify-center mx-auto
+                                    ${isLoading ? 'bg-gray-600 cursor-not-allowed' : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 animate-pulse-gradient'}
+                                `}
+                            >
+                                {isLoading && (
+                                    <svg className="animate-spin -ml-1 mr-3 h-7 w-7 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                )}
+                                {language === 'id' ? 'Hasilkan Prompt Video' : 'Generate Video Prompt'}
+                            </button>
+                        </div>
+
+                        {errorMessage && (
+                            <div className="bg-red-900 bg-opacity-30 border border-red-700 text-red-300 px-8 py-5 rounded-lg relative mb-8 shadow-md" role="alert">
+                                <strong className="font-bold">Error!</strong>
+                                <span className="block sm:inline ml-2">{errorMessage}</span>
+                            </div>
+                        )}
+
+                        {/* Generated Prompt Output */}
+                        {(generatedPromptId || generatedPromptEn) && (
+                            <div className="bg-gray-900 p-8 rounded-xl shadow-2xl border border-indigo-700 mt-10 animate-fade-in-up">
+                                <h2 className="text-3xl font-bold text-white mb-6 text-center font-lora">
+                                    {language === 'id' ? 'Prompt Video Anda:' : 'Your Video Prompt:'}
+                                </h2>
+
+                                {/* Indonesian Prompt */}
+                                <div className="mb-8 p-6 bg-gray-700 rounded-lg border border-gray-600">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="text-2xl font-semibold text-blue-300 font-lora">
+                                            Prompt (Bahasa Indonesia)
+                                        </h3>
+                                        <button
+                                            onClick={() => copyToClipboard(generatedPromptId)}
+                                            className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 flex items-center shadow-md transform hover:scale-105"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-copy mr-2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                            Salin
+                                        </button>
+                                    </div>
+                                    <p className="whitespace-pre-wrap text-gray-200 text-base leading-relaxed">{generatedPromptId}</p>
+                                    <div className="mt-5 pt-5 border-t border-gray-600">
+                                        <h4 className="font-semibold text-blue-300 text-lg font-lora">Saran Visual & Audio:</h4>
+                                        <p className="whitespace-pre-wrap text-gray-300 text-sm">{visualAudioSuggestionsId}</p>
+                                    </div>
+                                </div>
+
+                                {/* English Prompt */}
+                                <div className="p-6 bg-gray-700 rounded-lg border border-gray-600">
+                                    <div className="flex justify-between items-center mb-4">
+                                        <h3 className="text-2xl font-semibold text-purple-300 font-lora">
+                                            Prompt (English)
+                                        </h3>
+                                        <button
+                                            onClick={() => copyToClipboard(generatedPromptEn)}
+                                            className="px-5 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-300 flex items-center shadow-md transform hover:scale-105"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-copy mr-2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                            Copy
+                                        </button>
+                                    </div>
+                                    <p className="whitespace-pre-wrap text-gray-200 text-base leading-relaxed">{generatedPromptEn}</p>
+                                    <div className="mt-5 pt-5 border-t border-gray-600">
+                                        <h4 className="font-semibold text-purple-300 text-lg font-lora">Visual & Audio Suggestions:</h4>
+                                        <p className="whitespace-pre-wrap text-gray-300 text-sm">{visualAudioSuggestionsEn}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={modalTitle} language={language}>
+                        {modalContent}
+                    </Modal>
+                </div>
+            );
+        };
+
+        ReactDOM.render(
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>
